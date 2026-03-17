@@ -27,7 +27,10 @@ jobs:
         run: |
           export PYTHONPATH=.
           pytest --cov=app --cov-report=xml
-
+      - name: Debug files   # 👈 ADD HERE
+        run: |
+            pwd
+            ls -la
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@v2
         with:
@@ -35,6 +38,7 @@ jobs:
             -Dsonar.projectKey=devops-demo
             -Dsonar.sources=app
             -Dsonar.python.coverage.reportPaths=coverage.xml
+            -Dsonar.projectBaseDir=.
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
