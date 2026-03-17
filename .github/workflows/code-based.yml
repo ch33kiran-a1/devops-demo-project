@@ -33,6 +33,7 @@ jobs:
         with:
           args: >
             -Dsonar.projectKey=devops-demo
+            -Dsonar.sources=app
             -Dsonar.python.coverage.reportPaths=coverage.xml
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
