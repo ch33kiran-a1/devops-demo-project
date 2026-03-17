@@ -26,21 +26,37 @@ jobs:
           pip install -r requirements.txt
           pip install pytest pytest-cov
 
-      # Run tests with coverage
+      # Run tests
       - name: Run Tests
         run: |
           export PYTHONPATH=.
           pytest --cov=app --cov-report=xml
 
-      # Debug (optional but keep for now)
-      - name: Debug files
-        run: |
-          pwd
-          ls -la
-
-      # SonarQube Scan (FINAL CORRECT)
+      # SonarQube Scan
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@v2
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+      # Publish Artifact
+      - name: Publish Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-artifact
+          path: .
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      # Download Artifact
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: app-artifact
+
+      # Deploy step (demo)
+      - name: Deploy to Web App
+        run: echo "Deploying to Azure Web App"

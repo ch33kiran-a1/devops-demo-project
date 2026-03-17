@@ -2,21 +2,28 @@ name: Container Based CI/CD
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
-  docker:
+  container:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Docker Login
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Build Docker Image
-        run: docker build -t demoapp -f docker/Dockerfile .
+        run: docker build -t demo-app .
 
-      - name: Run Container
-        run: docker run -d -p 5000:5000 demoapp
+      - name: Tag Image
+        run: docker tag demo-app ch33kiran/demo-app:latest
+
+      - name: Push Image
+        run: docker push ch33kiran/demo-app:latest
 
       - name: Deploy Container
-        run: echo "Deploy container"
+        run: echo "Deploying container"
