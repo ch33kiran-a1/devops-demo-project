@@ -34,11 +34,12 @@ jobs:
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@v2
         with:
-          args: >
-            -Dsonar.projectKey=devops-demo
-            -Dsonar.sources=app
-            -Dsonar.python.coverage.reportPaths=coverage.xml
-            -Dsonar.projectBaseDir=.
+         args: >
+          -Dsonar.projectKey=devops-demo
+          -Dsonar.sources=app
+          -Dsonar.tests=tests
+          -Dsonar.python.coverage.reportPaths=coverage.xml
+          -Dsonar.sourceEncoding=UTF-8
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
