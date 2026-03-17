@@ -10,34 +10,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout code
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Setup Python
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
+      # Install dependencies
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
           pip install pytest pytest-cov
 
+      # Run tests with coverage
       - name: Run Tests
         run: |
           export PYTHONPATH=.
           pytest --cov=app --cov-report=xml
-      - name: Debug files   # 👈 ADD HERE
+
+      # Debug (optional but keep for now)
+      - name: Debug files
         run: |
-            pwd
-            ls -la
+          pwd
+          ls -la
+
+      # SonarQube Scan (FINAL CORRECT)
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@v2
-      - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@v2
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
